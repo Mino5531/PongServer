@@ -1,4 +1,4 @@
 class DataSender:
     @staticmethod
-    def SendGame(client,):
+    def SendGame(client):
         pass
