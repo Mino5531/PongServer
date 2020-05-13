@@ -30,6 +30,7 @@ class NetworkManager:
             target=NetworkManager.ListenTcp, args=())
         NetworkManager.runningThread.setDaemon(True)
         NetworkManager.runningThread.start()
+        print("NetMgr started")
 
     @staticmethod
     def ListenTcp():
