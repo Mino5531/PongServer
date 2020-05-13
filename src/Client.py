@@ -12,6 +12,8 @@ class Client:
         self.name = ""
         self.inQueue = False
         self.listen = True
+        self.game = None
+
         self.listenThread = threading.Thread(target=self.Listen, args=())
         self.listenThread.setDaemon(True)
         self.listenThread.start()
@@ -24,6 +26,7 @@ class Client:
             data = self.sock.recv(1024)
             if (len(data) == 0):
                 NetworkManager.NetworkManager.clients.pop(self.address)
+                self.listen = False
                 return
             buff = DataBuffer(data)
             if(buff.ReadInteger(False) in DataHandler.handlers):

@@ -1,4 +1,5 @@
 from DataBuffer import DataBuffer
+from QueueManager import QueueManager
 
 
 class ClientPackets:
@@ -17,6 +18,7 @@ class DataHandler:
                              ] = DataHandler.HandleNameSet
 
         DataHandler.handlers[ClientPackets.c_EnterPlayerQueue] = DataHandler.QueueEnterRequest
+        print("DataHandler initialized")
 
     @staticmethod
     def HandleNameSet(data, client):
@@ -28,4 +30,4 @@ class DataHandler:
 
     @staticmethod
     def QueueEnterRequest(data, client):
-        pass
+        QueueManager.instance.AddToQueue(client)
