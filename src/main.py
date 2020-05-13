@@ -1,10 +1,12 @@
 from NetworkManager import NetworkManager
 from DataHandler import DataHandler
+from QueueManager import QueueManager
 
 
 def main():
     DataHandler.InitDataHandler()
     NetworkManager.InitNet()
+    QueueManager()
     while True:
         cmd = raw_input("")
         if(cmd == "list"):
