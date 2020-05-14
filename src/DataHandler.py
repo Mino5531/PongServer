@@ -7,6 +7,7 @@ class ClientPackets:
     c_EnterPlayerQueue = 2
     c_EnterAIQueue = 3
     c_LeavePlayerQueue = 4
+    c_RacketPositionUpdate = 5
 
 
 class DataHandler:
@@ -31,3 +32,10 @@ class DataHandler:
     @staticmethod
     def QueueEnterRequest(data, client):
         QueueManager.instance.AddToQueue(client)
+
+    @staticmethod
+    def HandleRacketPosUpdate(data,client):
+        buff = DataBuffer(data)
+        buff.SkipBytes(4)
+        x = buff.ReadFloat()
+        y = buff.ReadFloat()
