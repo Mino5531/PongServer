@@ -19,6 +19,8 @@ class Game:
         Game.Games.append(self)
         DataSender.SendGame(self.client1, self)
         DataSender.SendGame(self.client2, self)
+        print("Starting game for %s and %s" %
+              (self.client1.name, self.client2.name))
 
     def __del__(self):
         for i in range(len(Game.Games)):
