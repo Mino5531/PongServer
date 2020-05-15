@@ -27,11 +27,12 @@ class DataBuffer:
         self.rwpos += count
 
     def WriteObject(self, obj):
+        # print(type(obj))
         if type(obj) is int:
             self.__writeBuff.extend(struct.pack("<i", obj))
             return
         if type(obj) is str:
-            self.WriteObject(len(obj))
+            self.WriteObject(int(len(obj)))
             self.__writeBuff.extend(bytes(obj))
             return
         if type(obj) is float:
@@ -62,7 +63,7 @@ class DataBuffer:
         for i in range(length):
             tmp.append(self.__readBuff[self.rwpos+i])
         self.rwpos += length
-        return tmp
+        return str(tmp)
 
     def ReadFloat(self, Peek=True):
         if(not self.__read):
