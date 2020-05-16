@@ -35,19 +35,52 @@ class Game:
         DataSender.SendGame(self.client2, self)
         print("Starting game for %s and %s" %
               (self.client1.name, self.client2.name))
-        self.loopSched.enter(0.03, 1, self.gameLoop,
-                             (self.loopSched,))  # gameLoop at 30Hz
+        self.loopSched.enter(0.016, 1, self.gameLoop,
+                             (self.loopSched,))  # gameLoop at 60Hz
         self.loopSched.run()
 
-    def gameLoop(self, sched):  # gameLoop at 30Hz
+    def gameLoop(self, sched):  # gameLoop at 60Hz
         self.ball.act()
         DataSender.SendPositionData(self.client1, self.LeftRacket.x,
                                     self.LeftRacket.y, self.RightRacket.x, self.RightRacket.y, self.ball.getX(), self.ball.getY())
         DataSender.SendPositionData(self.client2, self.LeftRacket.x,
                                     self.LeftRacket.y, self.RightRacket.x, self.RightRacket.y, self.ball.getX(), self.ball.getY())
-        sched.enter(0.03, 1, self.gameLoop, (sched,))  # gameLoop at 30Hz
+        if(self.rightScore.score > 9):
+            DataSender.SendStopGame(self.client1, "You win!")
+            DataSender.SendStopGame(self.client2, self.client1.name+" won!")
+            self.__del__()
+            return
+        if(self.leftScore.score > 9):
+            DataSender.SendStopGame(self.client2, "You win!")
+            DataSender.SendStopGame(self.client1, self.client2.name+" won!")
+            self.__del__()
+            return
+        if(self.stop):
+            return
+        sched.enter(0.016, 1, self.gameLoop, (sched,))  # gameLoop at 60Hz
+
+    def cancelGame(self):
+        self.stop = True
+        try:
+            DataSender.SendStopGame(self.client1, "Game aborted")
+        except:
+            pass
+        try:
+            DataSender.SendStopGame(self.client2, "Game aborted")
+        except:
+            pass
+        self.__del__()
 
     def __del__(self):
+        print("GameID: %i finished, cleaning up..." % (self.gameID))
+        try:
+            self.client1.game = None
+        except:
+            pass
+        try:
+            self.client2.game = None
+        except:
+            pass
         for i in range(len(Game.Games)):
             if(Game.Games[i] == self):
                 Game.Games.pop(i)
