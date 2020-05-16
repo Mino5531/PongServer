@@ -16,15 +16,7 @@ class QueueManager:
         self.queueThread.setDaemon(True)
         self.queueThread.start()
         print("QueueManager initialized")
-# --------------------------------------------------------
 
-  ####            #  #   #
-  #               # #    #
-  ##   #  #  ###  ##     #
-  #    #  #  #    # #
-  #     ##   ###  #  #   #
-
-# --------------------------------------------------------
     def getQueue(self):
         return self.__queue
 

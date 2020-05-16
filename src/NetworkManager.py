@@ -12,28 +12,30 @@ class NetworkManager:
     running = False
     # Clients
     clients = {}
+    # instance
+    instance = None
 
-    @staticmethod
-    def Shutdown():
+    def __init__(self):
+        NetworkManager.instance = self
+
+    def Shutdown(self):
         if(NetworkManager.running):
             NetworkManager.running = False
             NetworkManager.runningThread.join(2)
             NetworkManager.sock.close()
 
-    @staticmethod
-    def InitNet():
+    def InitNet(self):
         NetworkManager.running = True
         NetworkManager.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         NetworkManager.sock.bind(('localhost', 3007))
         NetworkManager.sock.listen(5)
         NetworkManager.runningThread = threading.Thread(
-            target=NetworkManager.ListenTcp, args=())
+            target=NetworkManager.instance.ListenTcp, args=())
         NetworkManager.runningThread.setDaemon(True)
         NetworkManager.runningThread.start()
         print("NetMgr started")
 
-    @staticmethod
-    def ListenTcp():
+    def ListenTcp(self):
         while(NetworkManager.running):
             (clientsocket, address) = NetworkManager.sock.accept()
             if(not NetworkManager.running):

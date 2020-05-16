@@ -4,9 +4,10 @@ from QueueManager import QueueManager
 
 
 def main():
-    DataHandler.InitDataHandler()
-    NetworkManager.InitNet()
-    QueueManager()
+    dataHandler = DataHandler()
+    netMgr = NetworkManager()
+    netMgr.InitNet()
+    qMgr = QueueManager()
     while True:
         cmd = raw_input("")
         if(cmd == "list"):
@@ -15,7 +16,7 @@ def main():
             print(QueueManager.instance.getQueue())
         if(cmd == "stop"):
             print("Shutting down server...")
-            NetworkManager.Shutdown()
+            netMgr.Shutdown()
             break
 
 

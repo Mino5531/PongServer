@@ -11,31 +11,30 @@ class ClientPackets:
 
 
 class DataHandler:
-    handlers = {}
 
-    @staticmethod
-    def InitDataHandler():
-        DataHandler.handlers[ClientPackets.c_SetName
-                             ] = DataHandler.HandleNameSet
+    instance = None
 
-        DataHandler.handlers[ClientPackets.c_EnterPlayerQueue] = DataHandler.QueueEnterRequest
-        DataHandler.handlers[ClientPackets.c_RacketPositionUpdate] = DataHandler.HandleRacketPosUpdate
+    def __init__(self):
+        DataHandler.instance = self
+        self.handlers = {}
+        self.handlers[ClientPackets.c_SetName
+                      ] = self.HandleNameSet
+
+        self.handlers[ClientPackets.c_EnterPlayerQueue] = self.QueueEnterRequest
+        self.handlers[ClientPackets.c_RacketPositionUpdate] = self.HandleRacketPosUpdate
         print("DataHandler initialized")
 
-    @staticmethod
-    def HandleNameSet(data, client):
+    def HandleNameSet(self, data, client):
         buff = DataBuffer(data)
         buff.SkipBytes(4)
         client.name = buff.ReadString()
         print("%s:%i is now %s" %
               (client.address[0], client.address[1], client.name))
 
-    @staticmethod
-    def QueueEnterRequest(data, client):
+    def QueueEnterRequest(self, data, client):
         QueueManager.instance.AddToQueue(client)
 
-    @staticmethod
-    def HandleRacketPosUpdate(data, client):
+    def HandleRacketPosUpdate(self, data, client):
         buff = DataBuffer(data)
         buff.SkipBytes(4)
         up = buff.ReadBoolean()

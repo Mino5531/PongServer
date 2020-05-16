@@ -59,7 +59,7 @@ class Ball:
         if (y+self.HEIGHT/2 + self.yVel * self.speed > const.SCREENHEIGHT or y-self.HEIGHT/2 + self.yVel * self.speed < 0):
             if(self.hitTimeout == 0):
                 self.yVel *= -1
-                self.hitTimeout = 5
+                self.hitTimeout = 3
             # self.speed += 0.1;
 
         # colliding with rightRacket?
@@ -67,11 +67,11 @@ class Ball:
             if(self.hitTimeout == 0):
                 self.xVel *= -1
                 self.speed += uniform(0.1, 0.3)
-                self.hitTimeout = 10
+                self.hitTimeout = 3
 
         # colliding with leftRacket?
         if(x+Ball.WIDTH//2+self.xVel * self.speed >= leftRacket_x - Racket.Racket.WIDTH//2 and x-Ball.WIDTH//2+self.xVel * self.speed <= leftRacket_x + Racket.Racket.WIDTH//2 and y+self.HEIGHT/2 + self.yVel * self.speed <= leftRacket_y + Racket.Racket.HEIGHT//2 and y-self.HEIGHT/2 + self.yVel * self.speed >= leftRacket_y - Racket.Racket.HEIGHT//2):
             if(self.hitTimeout == 0):
                 self.xVel *= -1
                 self.speed += uniform(0.1, 0.3)
-                self.hitTimeout = 10
+                self.hitTimeout = 3

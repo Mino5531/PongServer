@@ -32,9 +32,9 @@ class Client:
                 self.__del__()
                 return
             buff = DataBuffer(data)
-            if(buff.ReadInteger(False) in DataHandler.handlers):
+            if(buff.ReadInteger(False) in DataHandler.instance.handlers):
                 thread.start_new_thread(
-                    DataHandler.handlers[buff.ReadInteger()], (data, self))
+                    DataHandler.instance.handlers[buff.ReadInteger()], (data, self))
             else:
                 print("Unknown packettype from %s:%i" %
                       (self.address[0], self.address[1]))
