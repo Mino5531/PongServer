@@ -19,6 +19,8 @@ class Client:
         self.listenThread.start()
 
     def __del__(self):
+        if(self.game != None):
+            self.game.cancelGame()
         print("%s:%i disconnected" % (self.address[0], self.address[1]))
 
     def Listen(self):
@@ -27,6 +29,7 @@ class Client:
             if (len(data) == 0):
                 NetworkManager.NetworkManager.clients.pop(self.address)
                 self.listen = False
+                self.__del__()
                 return
             buff = DataBuffer(data)
             if(buff.ReadInteger(False) in DataHandler.handlers):
@@ -35,3 +38,10 @@ class Client:
             else:
                 print("Unknown packettype from %s:%i" %
                       (self.address[0], self.address[1]))
+
+    def send(self, data):
+        try:
+            self.sock.send(data)
+        except:
+            print("Error while sending packet to %s:%i" %
+                  (self.address[0], self.address[1]))
