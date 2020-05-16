@@ -5,6 +5,7 @@ class ServerPackets:
     s_EnterGame = 1
     s_SendGamePositions = 2
     s_SendScore = 3
+    s_StopGame = 4
 
 
 class DataSender:
@@ -23,7 +24,7 @@ class DataSender:
         buff.WriteObject(int(game.LeftRacket.y))
         buff.WriteObject(int(game.RightRacket.x))
         buff.WriteObject(int(game.RightRacket.y))
-        client.sock.send(buff.ToArray())
+        client.send(buff.ToArray())
 
     @staticmethod
     def SendPositionData(client, left_x, left_y, right_x, right_y, ball_x, ball_y):
@@ -35,7 +36,7 @@ class DataSender:
         buff.WriteObject(int(right_y))
         buff.WriteObject(int(ball_x))
         buff.WriteObject(int(ball_y))
-        client.sock.send(buff.ToArray())
+        client.send(buff.ToArray())
 
     @staticmethod
     def SendScoreUpdate(client, leftScore, rightScore):
@@ -43,4 +44,11 @@ class DataSender:
         buff.WriteObject(ServerPackets.s_SendScore)
         buff.WriteObject(leftScore)
         buff.WriteObject(rightScore)
-        client.sock.send(buff.ToArray())
+        client.send(buff.ToArray())
+
+    @staticmethod
+    def SendStopGame(client, msg):
+        buff = DataBuffer()
+        buff.WriteObject(ServerPackets.s_StopGame)
+        buff.WriteObject(msg)
+        client.send(buff.ToArray())
