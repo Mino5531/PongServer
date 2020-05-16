@@ -11,6 +11,8 @@ def main():
         cmd = raw_input("")
         if(cmd == "list"):
             print(NetworkManager.clients)
+        if(cmd == "queue"):
+            print(QueueManager.instance.getQueue())
         if(cmd == "stop"):
             print("Shutting down server...")
             NetworkManager.Shutdown()
