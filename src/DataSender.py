@@ -4,6 +4,7 @@ from DataBuffer import DataBuffer
 class ServerPackets:
     s_EnterGame = 1
     s_SendGamePositions = 2
+    s_SendScore = 3
 
 
 class DataSender:
@@ -17,7 +18,7 @@ class DataSender:
         else:
             buff.WriteObject(game.client1.name)
             buff.WriteObject(False)
-        #buff.WriteObject(game.gameID)
+        # buff.WriteObject(game.gameID)
         buff.WriteObject(int(game.LeftRacket.x))
         buff.WriteObject(int(game.LeftRacket.y))
         buff.WriteObject(int(game.RightRacket.x))
@@ -34,4 +35,12 @@ class DataSender:
         buff.WriteObject(int(right_y))
         buff.WriteObject(int(ball_x))
         buff.WriteObject(int(ball_y))
+        client.sock.send(buff.ToArray())
+
+    @staticmethod
+    def SendScoreUpdate(client, leftScore, rightScore):
+        buff = DataBuffer()
+        buff.WriteObject(ServerPackets.s_SendScore)
+        buff.WriteObject(leftScore)
+        buff.WriteObject(rightScore)
         client.sock.send(buff.ToArray())
