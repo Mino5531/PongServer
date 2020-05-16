@@ -8,6 +8,8 @@ class Score:
 
     def addScore(self):
         self.score += 1
+        if(self.score > 9):
+            return
         if(self.myGame.leftScore == self):
             DataSender.DataSender.SendScoreUpdate(self.myGame.client1,self.score,self.myGame.rightScore.score)
             DataSender.DataSender.SendScoreUpdate(self.myGame.client2,self.score,self.myGame.rightScore.score)

@@ -25,6 +25,9 @@ class QueueManager:
   #     ##   ###  #  #   #
 
 # --------------------------------------------------------
+    def getQueue(self):
+        return self.__queue
+
     def AddToQueue(self, client):
         QueueManager.__queueMutex.acquire()
         try:
@@ -46,13 +49,19 @@ class QueueManager:
     def ManageQueue(self):
         while(self.queueRunning):
             sleep(2)
-            QueueManager.__queueMutex.acquire()
             try:
                 if(len(self.__queue) >= 2):
                     while(len(self.__queue) >= 2):
+                        QueueManager.__queueMutex.acquire()
+                        tmp1 = self.__queue[0]
+                        tmp2 = self.__queue[1]
+                        QueueManager.__queueMutex.release()
+                        if(tmp1 == tmp2):
+                            raise Exception("Big fat error")
+                        self.RemoveFromQueue(tmp1)
+                        self.RemoveFromQueue(tmp2)
                         thread.start_new_thread(
-                            Game, (self.__queue[0], self.__queue[1]))
-                        self.__queue.pop(0)
-                        self.__queue.pop(0)
+                            Game, (tmp1, tmp2))
             finally:
-                QueueManager.__queueMutex.release()
+                if(QueueManager.__queueMutex.locked()):
+                    QueueManager.__queueMutex.release()
