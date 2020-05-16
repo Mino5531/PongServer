@@ -2,7 +2,7 @@ import const
 
 
 class Racket:
-    HEIGHT = 164
+    WIDTH, HEIGHT = 11, 164
     MAX_Y = const.SCREENHEIGHT-HEIGHT/2
     MIN_Y = HEIGHT/2
     SPEED = 5
