@@ -1,3 +1,6 @@
+"""Copyright (c) 2020 Long Yang Paffrath - All Rights Reserved
+   Unauthorized copying of this file, via any medium is strictly prohibited
+   Written by Long Yang Paffrath <paffrath@yangnet.de>, May 2020"""
 import struct
 
 
