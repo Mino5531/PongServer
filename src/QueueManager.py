@@ -1,6 +1,7 @@
 from time import sleep
 from Game import Game
 import threading
+import thread
 
 
 class QueueManager:
@@ -49,7 +50,8 @@ class QueueManager:
             try:
                 if(len(self.__queue) >= 2):
                     while(len(self.__queue) >= 2):
-                        Game(self.__queue[0], self.__queue[1])
+                        thread.start_new_thread(
+                            Game, (self.__queue[0], self.__queue[1]))
                         self.__queue.pop(0)
                         self.__queue.pop(0)
             finally:
